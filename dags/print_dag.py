@@ -1,6 +1,7 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 import pendulum
+from airflow.operators.empty import EmptyOperator
 
 def print_logical_date(**context):
     dt = context["logical_date"]
@@ -22,8 +23,14 @@ with DAG(
     tags=["example"],
 ) as dag:
     
+    start = EmptyOperator(task_id="start")
+
+    end = EmptyOperator(task_id="end")
+
     print_date_task = PythonOperator(
         task_id="print_logical_date",
         python_callable=combined,
         op_args = ["{{ds}}"]
     )
+
+    start >> print_date_task >> end
