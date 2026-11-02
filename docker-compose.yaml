@@ -76,6 +76,12 @@ x-airflow-common:
     _PIP_ADDITIONAL_REQUIREMENTS: 'matplotlib pandas seaborn'
     # The following line can be used to set a custom config file, stored in the local config folder
     AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
+
+    AIRFLOW__SMTP__SMTP_HOST: 'smtp.yandex.com'
+    AIRFLOW__SMTP__SMTP_PORT: '587'
+    AIRFLOW__SMTP__SMTP_USER: 'vladtest.vladtest@yandex.ru'
+    AIRFLOW__SMTP__SMTP_PASSWORD: 'zenvszidihiphebmiq'
+    AIRFLOW__SMTP__SMTP_MAIL_FROM: 'vladtest.vladtest@yandex.ru'
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
     - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
