@@ -64,9 +64,9 @@ with DAG(dag_id='email_yandex_dag',
         smtp_password = os.getenv('AIRFLOW__SMTP__SMTP_PASSWORD')
         smtp_from = os.getenv('AIRFLOW__SMTP__SMTP_MAIL_FROM')
 
-        file_path = "/opt/airflow/charts/report.docx"
-        file_path2 = "/opt/airflow/charts/img.png"
-        file_path3 = "/opt/airflow/charts/excel.xlsx"
+        file_path = "/opt/airflow/reports/report.docx"
+        file_path2 = "/opt/airflow/reports/img.png"
+        file_path3 = "/opt/airflow/reports/excel.xlsx"
 
         for p in (file_path, file_path2):
             if not os.path.isfile(p):
