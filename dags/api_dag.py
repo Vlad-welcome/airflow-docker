@@ -1,7 +1,6 @@
 from airflow.sdk import dag, task
 from airflow.operators.empty import EmptyOperator
 from datetime import datetime, timedelta
-from airflow.providers.http.operators.http import HttpOperator
 import requests
 
 dag_owner = "vlad"
@@ -21,38 +20,26 @@ default_args = {
     schedule=None,
     tags=["api"],
 )
-def api():
-    call_api = HttpOperator(
-        task_id="get_api_json",
-        http_conn_id="http_railway",
-        # endpoint="jsonplaceholder.typicode.com/todos/1",
-        endpoint="nodeapiairflow-production.up.railway.app/api/airflow/data",
-        method="GET",
-        response_filter=lambda response: response.json(),
-        log_response=True,
-    )
+def api_dag():
 
     @task
-    def proceess_response(response):
-        print(f"The title is: {response['data']}")
+    def start():
+        print("start")
 
-    proceess_response(call_api.output)
+    @task
+    def api_railway():
+        url = "http://host.docker.internal:3000/api/airflow/data"
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        print(data)
+        return data
 
+    @task
+    def end():
+        print("end")
 
-api()
-# get_api_data >> proceess_response
-
-
-# def api_railway():
-#     url = "https://nodeapiairflow-production.up.railway.app/api/airflow/data"
-#     response = requests.get(url, timeout=10)
-
-#     # Проверка статуса (выбросит исключение при 4xx/5xx)
-#     response.raise_for_status()
-
-#     # Парсинг JSON
-#     data = response.json()
-#     print(data)
+    start() >> api_railway() >> end()
 
 
-# api_railway()
+api_dag()
