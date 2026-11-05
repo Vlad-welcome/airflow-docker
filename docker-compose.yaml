@@ -82,6 +82,14 @@ x-airflow-common:
     AIRFLOW__SMTP__SMTP_USER: 'vladtest.vladtest@yandex.ru'
     AIRFLOW__SMTP__SMTP_PASSWORD: 'zenvszidihiphebmiq'
     AIRFLOW__SMTP__SMTP_MAIL_FROM: 'vladtest.vladtest@yandex.ru'
+
+    HTTP_PROXY: http://host.docker.internal:10809
+    HTTPS_PROXY: http://host.docker.internal:10809
+    NO_PROXY: >-
+      localhost,127.0.0.1,host.docker.internal,
+      postgres,redis,
+      airflow-worker,airflow-apiserver,airflow-triggerer,airflow-dag-processor,airflow-scheduler,
+      *.local,*.internal
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
     - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs

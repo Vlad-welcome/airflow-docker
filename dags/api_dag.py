@@ -28,8 +28,12 @@ def api_dag():
 
     @task
     def api_railway():
-        url = "http://host.docker.internal:3000/api/airflow/data"
+        # url = "http://host.docker.internal:3000/api/airflow/data"
+        # response = requests.get(url, timeout=10)
+
+        url = "https://nodeapiairflow-production.up.railway.app/api/airflow/data"
         response = requests.get(url, timeout=10)
+
         response.raise_for_status()
         data = response.json()
         print(data)
